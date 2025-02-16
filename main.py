@@ -14,13 +14,20 @@ model.tie_weights()
 processor = AutoProcessor.from_pretrained(model_id)
 
 prompt = "<|image|><|begin_of_text|>Is this image rotated or flipped?"
-    
-local_image_path = os.path.join(os.path.dirname(__file__), "view.jpg")
-raw_image = Image.open(local_image_path)
 
-inputs = processor(text=prompt, images=raw_image, return_tensors="pt").to(model.device)
-output = model.generate(**inputs, do_sample=False, max_new_tokens=32)
+def analyze_image(image_path: str) -> str:
+    raw_image = Image.open(image_path)
+    inputs = processor(text=prompt, images=raw_image, return_tensors="pt").to(model.device)
+    output = model.generate(**inputs, do_sample=False, max_new_tokens=32)
+    return processor.decode(output[0], skip_special_tokens=True)
 
+if __name__ == '__main__':
+    local_image_path = os.path.join(os.path.dirname(__file__), "view_upright.jpg")
+    result = analyze_image(local_image_path)
+    print("\n=============================\n")
+    print(result)
 
-print("\n=============================\n")
-print(processor.decode(output[0], skip_special_tokens=True))
+    local_image_path = os.path.join(os.path.dirname(__file__), "view_rotated.jpg")
+    result = analyze_image(local_image_path)
+    print("\n=============================\n")
+    print(result)

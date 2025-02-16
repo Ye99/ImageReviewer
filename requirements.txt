@@ -6,5 +6,5 @@ torchaudio
 # 'transformers' is installed from the default PyPI repository.
 transformers
 accelerate
-unsloth
 bitsandbytes
+pillow
