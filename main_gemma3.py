@@ -2,10 +2,10 @@
 
 from transformers import AutoProcessor, Gemma3ForConditionalGeneration
 from PIL import Image
-
+import requests
 import torch
 
-model_id = "google/gemma-3-27b-it"
+model_id = "google/gemma-3-12b-it"
 
 model = Gemma3ForConditionalGeneration.from_pretrained(
     model_id, device_map="auto"
